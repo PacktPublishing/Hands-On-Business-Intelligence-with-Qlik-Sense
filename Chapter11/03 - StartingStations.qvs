@@ -1,0 +1,10 @@
+StartStations:
+LOAD concat(Station,chr(39)&','&chr(39)) as concatenated_stations Inline [ 
+Station
+$(odso_start_station_name){"quote": "", "delimiter": ""}
+];
+Let vStartStations='';
+if NoOfRows('StartStations') > 0 then
+LET vStartStations = chr(39)&Peek('concatenated_stations')&chr(39);
+Endif
+Drop Table StartStations;
