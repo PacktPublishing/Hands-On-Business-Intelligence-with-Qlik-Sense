@@ -1,0 +1,66 @@
+// Setup
+//$(odso_trip_month)[1-4]
+//$(odso_start_station_name)[1-10]
+//$(odso_end_station_name)[1-10]
+
+Trace Collecting values for selected values;
+StartStations:
+LOAD concat(Station,chr(39)&','&chr(39)) as concatenated_stations Inline [ 
+Station
+$(odso_start_station_name){"quote": "", "delimiter": ""}
+];
+Let vStartStations='';
+if NoOfRows('StartStations') > 0 then
+LET vStartStations = chr(39)&Peek('concatenated_stations')&chr(39);
+Endif
+Drop Table StartStations;
+
+EndStations:
+LOAD concat(Station,chr(39)&','&chr(39)) as concatenated_stations Inline [ 
+Station
+$(odso_end_station_name){"quote": "", "delimiter": ""}
+];
+Let vEndStations='';
+if NoOfRows('EndStations') > 0 then
+LET vEndStations = chr(39)&Peek('concatenated_stations')&chr(39);
+Endif
+Drop Table EndStations;
+
+// We have to adjust date format so we´re using subfield 
+TripMonths:
+LOAD concat(
+       SubField(TripMonths,'/',3) & '-' 
+      & SubField(TripMonths,'/',1) & '-' 
+      & SubField(TripMonths,'/',2) 
+    ,chr(39)&','&chr(39)) as concatenated_months Inline [ 
+TripMonths
+$(odso_trip_month){"quote": "", "delimiter": ""}
+];
+Let vMonths='';
+if NoOfRows('TripMonths') > 0 then
+LET vMonths = chr(39)&Peek('concatenated_months')&chr(39);
+Endif
+Drop Table TripMonths;
+
+Trace Creating dynamic SQL;
+
+SET SQL = 'SELECT * FROM `bigquery-public-data.new_york.citibike_trips` WHERE 1=1 ';
+IF Len(vStartStations) > 0 Then
+    LET SQL = SQL & chr(10) & ' AND start_station_name in ($(vStartStations))';
+Endif
+IF Len(vEndStations) > 0 Then
+    LET SQL = SQL & chr(10) & ' AND end_station_name in ($(vEndStations))';
+Endif
+IF Len(vEndStations) > 0 Then
+    LET SQL = SQL & chr(10) & ' AND TIMESTAMP_TRUNC(starttime, month) in ($(vMonths))';
+Endif
+
+Trace Executing SQL $(SQL);
+LIB CONNECT TO 'Google_BigQuery (qmi-qs-sn_qlik)';
+SQL $(SQL);
+
+Trace Cleanup;
+SET SQL=;
+SET vMonths=;
+SET vEndStations=;
+SET vStartStations=;
