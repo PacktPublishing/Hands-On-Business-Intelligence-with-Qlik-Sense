@@ -1,0 +1,48 @@
+LIB CONNECT TO 'Google_BigQuery';
+// We have to make a small adjusment, since GeoAnaytics recognizes Brooklyn as Kings County
+Borough: 
+mapping load * Inline [
+From, To
+BROOKLYN, KINGS
+];
+MAP borough USING Borough;
+Collisions:
+Load 
+ collision_date,
+ borough,
+ latitude,
+ longitude,
+ zip_code,
+ contributing_factor_vehicle_1,
+ number_of_cyclist_injured,
+ number_of_cyclist_killed,
+ number_of_motorist_injured,
+ number_of_motorist_killed,
+ number_of_persons_killed,
+ number_of_persons_injured,
+ unique_key,
+ vehicle_type_code1,
+ vehicle_type_code2,
+ GeoMakePoint(latitude,longitude) as collision_point; 
+SELECT DATETIME_TRUNC(TIMESTAMP, DAY) AS collision_date,
+ borough,
+ latitude,
+ longitude,
+ zip_code,
+ contributing_factor_vehicle_1,
+ number_of_cyclist_injured,
+ number_of_cyclist_killed,
+ number_of_motorist_injured,
+ number_of_motorist_killed,
+ number_of_persons_killed,
+ number_of_persons_injured,
+ unique_key,
+ vehicle_type_code1,
+ vehicle_type_code2
+FROM `bigquery-public-data.new_york_mv_collisions.nypd_mv_collisions`
+WHERE NOT LOCATION IS NULL AND LENGTH(borough)>0;
+
+Collisions_Vehicle:
+load unique_key,vehicle_type_code1 as vehicle_type Resident Collisions;
+Collisions_Vehicle:
+load unique_key,vehicle_type_code2 as vehicle_type Resident Collisions;
