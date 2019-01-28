@@ -1,0 +1,22 @@
+LIB CONNECT TO 'Google_BigQuery';
+NYC_Bike_trips:
+load 
+   date(trip_month) as trip_month
+   ,line_counter
+   ,start_station_name
+   ,end_station_name
+   ,tripduration
+   ,trips;
+sql 
+SELECT 
+    TIMESTAMP_TRUNC(starttime, month) AS trip_month
+  ,start_station_name
+  ,end_station_name
+  ,sum(tripduration) AS tripduration
+  ,count(starttime) AS trips
+  ,sum(1) as line_counter
+FROM `bigquery-public-data.new_york.citibike_trips`
+GROUP BY 
+     TIMESTAMP_TRUNC(starttime, month)
+  ,start_station_name
+  ,end_station_name;
