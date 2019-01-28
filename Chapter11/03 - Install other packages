@@ -1,0 +1,7 @@
+install.packages("jsonlite", lib = "C:\\R\\R-3.5.1\\library")
+install.packages("ChainLadder", lib = "C:\\R\\R-3.5.1\\library")
+install.packages("forecast", lib = "C:\\R\\R-3.5.1\\library")
+install.packages("rpart", lib = "C:\\R\\R-3.5.1\\library")
+install.packages("partykit", lib = "C:\\R\\R-3.5.1\\library")
+install.packages("tseries", lib = "C:\\R\\R-3.5.1\\library")
+q()
