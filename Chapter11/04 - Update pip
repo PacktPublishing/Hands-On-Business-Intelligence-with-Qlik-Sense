@@ -1,0 +1,2 @@
+cd C:\Python\Python36\Scripts 
+python -m pip install --upgrade pip
