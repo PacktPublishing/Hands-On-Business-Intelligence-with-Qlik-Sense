@@ -1,0 +1,19 @@
+JoinOutput:
+Load * inline [
+OrderNumber,Product,CustomerID,OrderValue
+100,Fruits,1,100
+101,Fruits,2,80
+102,Fruits,3,120
+103,Vegetables,6,200
+];
+
+Inner Join (JoinOutput)
+
+Load * inline [
+CustomerID,Name
+1,Alex
+2,Linda
+3,Sam
+4,Michael
+5,Sara
+];
