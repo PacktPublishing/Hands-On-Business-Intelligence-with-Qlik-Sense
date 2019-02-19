@@ -1,6 +1,3 @@
-// Connects to Data connection
-LIB CONNECT TO 'Google_BigQuery';
-
 //Precedent load to format the field trip_month
 NYC_Bike_trips:
 load 
