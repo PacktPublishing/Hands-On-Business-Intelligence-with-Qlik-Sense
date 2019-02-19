@@ -1,4 +1,7 @@
+// Connects to Data connection
 LIB CONNECT TO 'Google_BigQuery';
+
+//Precedent load to format the field trip_month
 NYC_Bike_trips:
 load 
    date(trip_month) as trip_month
@@ -7,16 +10,17 @@ load
    ,end_station_name
    ,tripduration
    ,trips;
-sql 
+   
+SQL  // SQL to retrieve summarized data   
 SELECT 
-    TIMESTAMP_TRUNC(starttime, month) AS trip_month
+    TIMESTAMP_TRUNC(starttime, month) AS trip_month // Converts a date to month
   ,start_station_name
   ,end_station_name
-  ,sum(tripduration) AS tripduration
-  ,count(starttime) AS trips
-  ,sum(1) as line_counter
+  ,sum(tripduration) AS tripduration  // aggregates the total duration
+  ,count(starttime) AS trips          // aggregates the total count of trips 
+  ,sum(1) as line_counter             // line counter
 FROM `bigquery-public-data.new_york.citibike_trips`
 GROUP BY 
-     TIMESTAMP_TRUNC(starttime, month)
+     TIMESTAMP_TRUNC(starttime, month) // Converts a date to month
   ,start_station_name
   ,end_station_name;
