@@ -1,4 +1,4 @@
-#Hands-On-Business-Intelligence-with-Qlik-Sense#
+#Hands-On-Business-Intelligence-with-Qlik-Sense
 
 <a href="https://www.packtpub.com/big-data-and-business-intelligence/hands-business-intelligence-qlik-sense#utm_source=9781789800944"><img src="https://dz13w8afd47il.cloudfront.net/sites/default/files/imagecache/ppv4_main_book_cover/B12331_cover.png" alt="Book Name" height="256px" align="right"></a>
 
