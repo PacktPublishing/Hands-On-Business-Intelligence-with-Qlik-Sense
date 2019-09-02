@@ -10,7 +10,7 @@ load
    
 SQL  // SQL to retrieve summarized data   
 SELECT 
-    TIMESTAMP_TRUNC(starttime, month) AS trip_month // Converts a date to month
+    DATETIME_TRUNC(starttime, month) AS trip_month // Converts a date to month
   ,start_station_name
   ,end_station_name
   ,sum(tripduration) AS tripduration  // aggregates the total duration
@@ -18,6 +18,6 @@ SELECT
   ,sum(1) as line_counter             // line counter
 FROM `bigquery-public-data.new_york_citibike.citibike_trips`
 GROUP BY 
-     TIMESTAMP_TRUNC(starttime, month) // Converts a date to month
+     DATETIME_TRUNC(starttime, month) // Converts a date to month
   ,start_station_name
   ,end_station_name;
